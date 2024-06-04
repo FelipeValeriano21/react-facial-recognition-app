@@ -1,0 +1,15 @@
+.login {
+    background: rgb(38,33,43);
+    background: linear-gradient(90deg, rgba(38,33,43,1) 0%, rgba(11,0,11,1) 0%, rgba(37,9,139,1) 100%);
+}
+
+.btn-entrar {
+    background: rgb(38,33,43);
+    background: linear-gradient(90deg, rgba(38,33,43,1) 0%, rgba(11,0,11,1) 0%, rgba(37,9,139,1) 100%);
+    color: white !important;
+} 
+
+.btn-goregister {
+    background-color: white;
+    border: 1px solid rgb(38,33,43) !important;
+}

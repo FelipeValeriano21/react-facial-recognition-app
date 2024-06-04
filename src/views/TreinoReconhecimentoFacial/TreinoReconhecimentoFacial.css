@@ -1,0 +1,56 @@
+body{
+
+    background: rgb(38,33,43);
+    background: linear-gradient(90deg, rgba(38,33,43,1) 0%, rgba(11,0,11,1) 0%, rgba(37,9,139,1) 100%);
+
+}
+
+
+.camera {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.video-container {
+    margin-bottom: 20px;
+    position: relative;
+    width: 300px; /* Defina a largura desejada para o vídeo */
+    height: 400px; /* Defina a altura desejada para o vídeo */
+    overflow: hidden;
+    border: 2px solid #ccc; /* Adiciona uma borda de 2px sólida com cor cinza */
+}
+
+.video-container video {
+    position: absolute;
+    top: -50%; /* Ajuste para centralizar verticalmente */
+    left: -35%; /* Ajuste para centralizar horizontalmente */
+    transform: translate(0%, 50%); /* Corrija a posição após a rotação */
+    width: auto;
+    height: 100%;
+}
+
+h2 {
+    color: white !important; /* Define a cor do título como branco */
+}
+
+button {
+    margin: 5px;
+    padding: 10px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    margin-left: 5px !important;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.captured-photo {
+    margin-top: 20px;
+    max-width: 100%;
+}
+
+
