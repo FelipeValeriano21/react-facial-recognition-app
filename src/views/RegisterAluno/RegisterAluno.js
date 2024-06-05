@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import './RegisterAluno.css'
+import { useNavigate } from "react-router-dom";
+import './RegisterAluno.css';
 
 function RegisterAluno() {
+    const navigate = useNavigate();
     const [professores, setProfessores] = useState([]);
     const [formData, setFormData] = useState({
         idtb_aluno: "",
@@ -10,7 +12,7 @@ function RegisterAluno() {
         senha_aluno: "",
         confirmar_senha: ""
     });
-    
+
     useEffect(() => {
         fetch("http://127.0.0.1:5000/Professores")
             .then(response => response.json())
@@ -26,23 +28,20 @@ function RegisterAluno() {
         }));
     };
 
-    // Adicione uma função para lidar com a mudança na seleção do professor
     const handleProfessorChange = (e) => {
         const { value } = e.target;
         setFormData(prevState => ({
             ...prevState,
-            idtb_professor: value
+            tb_professor_idtb_professor: value
         }));
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Verificar se as senhas coincidem
         if (formData.senha_aluno !== formData.confirmar_senha) {
             alert("As senhas não coincidem.");
             return;
         }
-        // Enviar os dados para a API Flask
         fetch("http://127.0.0.1:5000/Insert", {
             method: "POST",
             headers: {
@@ -52,17 +51,18 @@ function RegisterAluno() {
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data); // Lidar com a resposta da API
-            // Limpar o formulário após o envio bem-sucedido
-            setFormData({
-                idtb_aluno: "",
-                nome_aluno: "",
-                idtb_professor: "",
-                senha_aluno: "",
-                confirmar_senha: ""
-            });
+            console.log("API response:", data);
+            if (data && data.id) {
+                navigate(`/treinandoIA/${data.id}`);
+            } else {
+                console.error("Erro ao cadastrar aluno: resposta inválida da API.");
+            }
         })
         .catch(error => console.error("Error:", error));
+    };
+
+    const handleRegisterAlunoClick = () => {
+        navigate("/");
     };
 
     return (
@@ -71,37 +71,36 @@ function RegisterAluno() {
                 <form onSubmit={handleSubmit}>
                     <h4 className="mb-4">Cadastro - Reconhecimento Facial</h4>
                     <div className="mb-3">
-                    <label className="mb-1"><strong>RA DO ALUNO</strong></label>
-                    <input 
-                        type="text" 
-                        placeholder="Entre com o RA" 
-                        className="form-control"  
-                        maxLength="4" 
-                        name="idtb_aluno" 
-                        value={formData.idtb_aluno}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div className="mb-3">
-                    <label className="mb-1"><strong>NOME COMPLETO</strong></label>
-                    <input 
-                        type="text" 
-                        placeholder="Entre com o Nome" 
-                        className="form-control"  
-                        name="nome_aluno" 
-                        value={formData.nome_aluno}
-                        onChange={handleChange}
-                    />
-                </div>
-
+                        <label className="mb-1"><strong>RA DO ALUNO</strong></label>
+                        <input 
+                            type="text" 
+                            placeholder="Entre com o RA" 
+                            className="form-control"  
+                            maxLength="4" 
+                            name="idtb_aluno" 
+                            value={formData.idtb_aluno}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label className="mb-1"><strong>NOME COMPLETO</strong></label>
+                        <input 
+                            type="text" 
+                            placeholder="Entre com o Nome" 
+                            className="form-control"  
+                            name="nome_aluno" 
+                            value={formData.nome_aluno}
+                            onChange={handleChange}
+                        />
+                    </div>
                     <div className="mb-4">
                         <label htmlFor="identidade" className="mb-1"><strong>SEU PROFESSOR</strong></label>
                         <select 
                             id="identidade" 
-                            name="idtb_professor" 
+                            name="tb_professor_idtb_professor" 
                             className="form-control"
-                            value={formData.idtb_professor}
-                            onChange={handleProfessorChange} // Alterado para handleProfessorChange
+                            value={formData.tb_professor_idtb_professor}
+                            onChange={handleProfessorChange}
                         >
                             <option value="">Selecione o professor</option>
                             {professores.map(professor => (
@@ -133,7 +132,7 @@ function RegisterAluno() {
                     </div>
                     <div className="d-grid">
                         <button type="submit" className="btn mb-3 btn-entrar">Verificar e Cadastrar</button>
-                        <button type="button" className="btn btn-goregister">Já tenho cadastro</button>
+                        <button type="button" className="btn btn-goregister" onClick={handleRegisterAlunoClick}>Já tenho cadastro</button>
                     </div>
                 </form>
             </div>

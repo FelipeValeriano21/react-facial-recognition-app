@@ -7,7 +7,7 @@ function Login() {
     const [senha, setSenha] = useState("");
     const [mode, setMode] = useState("aluno");
     const [errors, setErrors] = useState({});
-    const navigate = useNavigate(); // Adicione esta linha para definir navigate
+    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -23,13 +23,34 @@ function Login() {
         setErrors(formErrors);
 
         if (Object.keys(formErrors).length === 0) {
-            // Lógica para enviar o formulário
-            console.log({ ra, senha, mode });
+            fetch("http://127.0.0.1:5000/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ id: ra, senha: senha })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    setErrors({ form: data.error });
+                } else {
+                    if (data.user_type === 'aluno') {
+                        navigate(`/ChamadaAluno/${ra}`);
+                    } else if (data.user_type === 'professor') {
+                        navigate(`/ProfessorDashboard/${ra}`);
+                    }
+                }
+            })
+            .catch(error => {
+                setErrors({ form: 'Erro ao conectar com o servidor.' });
+                console.error('Erro ao fazer login:', error);
+            });
         }
     };
 
     const handleRegisterAlunoClick = () => {
-        navigate("/RegisterAluno"); // Use navigate para redirecionar para a rota RegisterAluno
+        navigate("/RegisterAluno");
     };
 
     return (
@@ -76,9 +97,9 @@ function Login() {
                     <div className="d-grid">
                         <button type="submit" className="btn mb-3 btn-entrar">Entrar na plataforma</button>
                         <button type="button" className="btn btn-goregister" onClick={handleRegisterAlunoClick}>Sou um novo aluno</button>
+                        {errors.form && <div className="text-danger mt-3">{errors.form}</div>}
                     </div>
                 </form>
-
             </div>
         </div>
     );

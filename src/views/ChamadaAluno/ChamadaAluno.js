@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import './TreinoReconhecimentoFacial.css';
+import './ChamadaAluno.css';
 import { useParams } from 'react-router-dom';
 
 function Camera() {
@@ -27,7 +27,7 @@ function Camera() {
 
     return (
         <div className="camera mb-5">
-            <h3 className="mb-5">Treinando a IA para o Aluno com RA final: {id}</h3> {/* Exibindo o ID do aluno */}
+            <h3 className="mb-5">Chamada por reconhecimento facial do aluno: {id}</h3> {/* Exibindo o ID do aluno */}
             <div className="video-container">
                 <video className="" ref={videoRef} autoPlay playsInline></video>
             </div>
